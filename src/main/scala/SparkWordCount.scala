@@ -1,5 +1,6 @@
 package main.scala
-
+import org.apache.spark.SparkContext._
+import org.apache.spark.{SparkConf, SparkContext}
 object SparkWordCount {
   def main(args: Array[String]) {
     // create Spark context with Spark configuration
@@ -23,8 +24,9 @@ object SparkWordCount {
 //    System.out.println(charCounts.collect().mkString(", "))
 
     val max = args(0).toInt
+    val partition =args(1).toInt
     System.out.println("max number " +max)
-    val composite1=sc.parallelize(1 to max,1).map(p=>(-p,p)).sortByKey()
+    val composite1=sc.parallelize(1 to max,partition).map(p=>(-p,p)).groupByKey()
     composite1.foreach(println)
     System.out.println("stop")
 
